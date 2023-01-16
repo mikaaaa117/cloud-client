@@ -2,12 +2,11 @@
 import Logo from "@/assets/Logo.vue";
 import { useUsersStore } from "@/stores/users";
 const store = useUsersStore();
-console.log(store.isAuth);
 </script>
 
 <template>
   <div class="header">
-    <RouterLink to="/">
+    <RouterLink class="header__logo" to="/">
       <Logo />
     </RouterLink>
     <RouterLink to="/auth">
@@ -25,5 +24,10 @@ console.log(store.isAuth);
   background-color: white;
   border-radius: 12px;
   justify-content: space-between;
+}
+.header__logo {
+  height: 40px;
+  display: flex;
+  align-items: center;
 }
 </style>

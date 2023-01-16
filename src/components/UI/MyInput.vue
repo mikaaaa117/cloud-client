@@ -9,7 +9,7 @@
 
 <script lang="ts">
 export default {
-  name: "my-input",
+  name: "MyInput",
   props: {
     modelValue: [String, Number],
   },
@@ -23,9 +23,17 @@ export default {
 
 <style>
 .my-input {
-  padding: 0.4rem 0;
+  padding: 10px 16px;
   border-bottom: 1px solid silver;
   font-size: 17px;
   width: 100%;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  outline: none;
+  transition: border 0.1s ease-in-out;
+}
+
+.my-input:focus {
+  border: 2px solid darkcyan;
 }
 </style>
