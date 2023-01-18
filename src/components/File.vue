@@ -37,8 +37,8 @@ const changeDir = () => {
       className="file__img"
       :src="
         file.type === 'directory'
-          ? 'src/assets/directory-icon.svg'
-          : 'src/assets/file-icon.svg'
+          ? 'src/assets/directory.svg'
+          : 'src/assets/file.svg'
       "
     />
     <div className="file__name">{{ props.file.name }}</div>
@@ -52,5 +52,14 @@ const changeDir = () => {
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 6fr 2fr 1fr;
+  padding: 0.4em;
+  border-radius: 8px;
+  transition: transform 300ms;
+}
+
+.file:hover {
+  cursor: pointer;
+  background-color: #fafafa;
+  transform: scale(1.005);
 }
 </style>

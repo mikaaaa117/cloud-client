@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useFilesStore } from "./files";
 
 export const useUsersStore = defineStore("users", {
   state: () => ({
@@ -19,9 +20,12 @@ export const useUsersStore = defineStore("users", {
       localStorage.setItem("email", email);
     },
     logout() {
+      const filesStore = useFilesStore();
       this.email = "";
       this.token = null;
       this.isAuth = false;
+      filesStore.currentDir = "";
+      filesStore.files = [];
       localStorage.removeItem("email");
       localStorage.removeItem("token");
       localStorage.setItem("auth", "false");

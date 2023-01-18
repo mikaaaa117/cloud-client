@@ -2,7 +2,10 @@
 import { useUsersStore } from "@/stores/users";
 import File from "@/components/File.vue";
 import { useFilesStore } from "@/stores/files";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
+
+import AddModal from "@/components/AddModal.vue";
+import MyDialog from "@/components/UI/MyDialog.vue";
 
 const userStore = useUsersStore();
 const filesStore = useFilesStore();
@@ -11,8 +14,16 @@ onMounted(() => {
   filesStore.fetchFiles();
 });
 
+const modalVisible = ref(false);
+const showDialog = ref(false);
+const dirName = ref<string | null>(null);
+
 const changeDir = () => {
   filesStore.fetchFiles();
+};
+
+const createDir = () => {
+  if (dirName.value !== null) filesStore.createDir(dirName.value);
 };
 </script>
 
@@ -20,7 +31,11 @@ const changeDir = () => {
   <h1 v-if="userStore.email === ''">You need to auth</h1>
   <main class="files" v-else>
     <div class="files__header">
-      <MyButton>+ Add</MyButton>
+      <MyButton @click="modalVisible = !modalVisible">+ Add</MyButton>
+      <AddModal
+        @handleShowDialog="showDialog = !showDialog"
+        v-model:show="modalVisible"
+      />
       <MySelect></MySelect>
     </div>
     <div class="files-table">
@@ -38,6 +53,10 @@ const changeDir = () => {
       />
     </div>
   </main>
+  <MyDialog v-model:show="showDialog">
+    <h2>Input name of a new folder</h2>
+    <MyInput @keyup.enter="createDir" v-model="dirName" />
+  </MyDialog>
 </template>
 
 <style scoped>
@@ -53,9 +72,16 @@ const changeDir = () => {
   display: flex;
   flex-direction: column;
 }
+
+.files__header {
+  position: relative;
+  margin-bottom: 24px;
+}
+
 .table__title {
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 6fr 2fr 1fr;
+  margin-bottom: 12px;
 }
 </style>

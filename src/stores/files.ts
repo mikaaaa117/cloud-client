@@ -28,5 +28,28 @@ export const useFilesStore = defineStore("files", {
     changeDir(path: string) {
       this.currentDir = path;
     },
+    async createFile(file: any) {
+      const usersStore = useUsersStore();
+      file.append("parent", this.currentDir);
+      await axios.post("http://localhost:5000/file/upload", file, {
+        headers: { Authorization: `Bearer ${usersStore.token}` },
+      });
+
+      await this.fetchFiles();
+    },
+    async createDir(name: string) {
+      const usersStore = useUsersStore();
+      await axios.post(
+        "http://localhost:5000/file/directory",
+        {
+          name: name,
+          type: "directory",
+        },
+        {
+          headers: { Authorization: `Bearer ${usersStore.token}` },
+        }
+      );
+      await this.fetchFiles();
+    },
   },
 });

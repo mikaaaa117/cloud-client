@@ -40,6 +40,9 @@ export default {
 
 .my-dialog__content {
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   background-color: white;
   border-radius: 0.4rem;
   min-height: 50px;
