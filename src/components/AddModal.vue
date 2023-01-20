@@ -22,7 +22,7 @@ const uploadFile = (e: Event) => {
   if (filesList !== null) {
     const filesStore = useFilesStore();
     fileData.append("file", filesList[0], filesList[0].name);
-    filesStore.createFile(fileData);
+    filesStore.createFile(filesList[0]);
   }
 };
 </script>

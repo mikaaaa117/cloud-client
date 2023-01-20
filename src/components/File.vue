@@ -1,39 +1,58 @@
 <script setup lang="ts">
-import { defineProps, onMounted, defineEmits } from "vue";
+import { defineProps, onMounted, defineEmits, ref } from "vue";
 import { useFilesStore } from "@/stores/files";
 export interface File {
   _id: string;
   type: string;
   name: string;
-  date: string;
   size: number;
+  path: string;
 }
 const filesStore = useFilesStore();
-
-const emit = defineEmits<{
-  (e: "changeDir"): void;
-}>();
 
 const props = defineProps<{
   file: File;
 }>();
 
-onMounted(() => {
-  console.log(props.file);
-});
+const handleFileClick = () => {
+  if (props.file.type === "directory") {
+    changeDir();
+  }
+  if (props.file.type !== "directory" && props.file.type) {
+    downloadFile();
+  }
+};
 
 const changeDir = () => {
-  if (props.file.type === "directory") {
-    filesStore.changeDir(props.file._id);
-    console.log(filesStore.currentDir);
-    emit("changeDir");
+  filesStore.changeDir(props.file._id, props.file.path);
+};
+
+const deleteFile = () => {
+  filesStore.deleteFile(props.file._id);
+};
+
+const downloadFile = async () => {
+  const blob: Blob | MediaSource | undefined = await filesStore.downloadFile(
+    props.file._id,
+    props.file.type
+  );
+  if (blob !== undefined) {
+    const downloadURL = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = downloadURL;
+    link.download = props.file.name;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   }
 };
 </script>
 
 <template>
-  <div @click="changeDir" className="file">
+  <div className="file">
+    <div @click="deleteFile" className="file__delete"></div>
     <img
+      @click="handleFileClick"
       className="file__img"
       :src="
         file.type === 'directory'
@@ -41,8 +60,10 @@ const changeDir = () => {
           : 'src/assets/file.svg'
       "
     />
-    <div className="file__name">{{ props.file.name }}</div>
-    <div className="file__date">{{ props.file.date }}</div>
+    <div @click="handleFileClick" className="file__name">
+      {{ props.file.name }}
+    </div>
+    <div className="file__date"></div>
     <div className="file__size">{{ props.file.size }}</div>
   </div>
 </template>
@@ -50,11 +71,27 @@ const changeDir = () => {
 <style scoped>
 .file {
   display: grid;
+  position: relative;
   align-items: center;
   grid-template-columns: 1fr 6fr 2fr 1fr;
   padding: 0.4em;
   border-radius: 8px;
   transition: transform 300ms;
+  overflow: hidden;
+}
+
+.file__delete {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  right: -40px;
+  transition: right 300ms ease;
+  background-color: #a7171a;
+  z-index: 3;
+}
+
+.file:hover > .file__delete {
+  right: 8px;
 }
 
 .file:hover {

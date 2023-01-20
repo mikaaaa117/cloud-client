@@ -9,7 +9,7 @@ import MyDialog from "@/components/UI/MyDialog.vue";
 
 const userStore = useUsersStore();
 const filesStore = useFilesStore();
-console.log(filesStore.files);
+
 onMounted(() => {
   filesStore.fetchFiles();
 });
@@ -18,9 +18,9 @@ const modalVisible = ref(false);
 const showDialog = ref(false);
 const dirName = ref<string | null>(null);
 
-const changeDir = () => {
-  filesStore.fetchFiles();
-};
+const setHomeDir = () => filesStore.changeDir("", "");
+
+const backDir = () => filesStore.backDir();
 
 const createDir = () => {
   if (dirName.value !== null) filesStore.createDir(dirName.value);
@@ -38,6 +38,10 @@ const createDir = () => {
       />
       <MySelect></MySelect>
     </div>
+    <div class="files__breadcrumbs">
+      <button class="breadcrumbs__button" @click="backDir">back</button>
+      <span @click="setHomeDir">Home \</span>
+    </div>
     <div class="files-table">
       <div class="table__title">
         <h3>Type</h3>
@@ -45,12 +49,7 @@ const createDir = () => {
         <h3>Last modified</h3>
         <h3>File size</h3>
       </div>
-      <File
-        :key="file._id"
-        @changeDir="changeDir"
-        :file="file"
-        v-for="file in filesStore.files"
-      />
+      <File :key="file._id" :file="file" v-for="file in filesStore.files" />
     </div>
   </main>
   <MyDialog v-model:show="showDialog">
