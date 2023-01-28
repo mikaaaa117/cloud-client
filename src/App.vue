@@ -11,10 +11,10 @@ import Header from "./components/Header.vue";
 </template>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
 * {
   box-sizing: border-box;
-  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-family: "Inter", sans-serif;
   padding: 0;
   margin: 0;
 }

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import Logo from "@/assets/Logo.vue";
-import { useUsersStore } from "@/stores/users";
+import DiskSpace from "./DiskSpace.vue";
+import { useUsersStore } from "../stores/users";
+
 const store = useUsersStore();
 </script>
 
@@ -9,10 +11,13 @@ const store = useUsersStore();
     <RouterLink class="header__logo" to="/">
       <Logo />
     </RouterLink>
-    <RouterLink to="/auth">
-      <MyButton v-if="!store.isAuth">Sign In</MyButton>
-    </RouterLink>
-    <MyButton @click="store.logout()" v-if="store.isAuth">Log out</MyButton>
+    <div class="header__nav">
+      <DiskSpace v-if="store.isAuth" />
+      <RouterLink to="/auth">
+        <MyButton v-if="!store.isAuth">Sign In</MyButton>
+      </RouterLink>
+      <MyButton @click="store.logout()" v-if="store.isAuth">Log out</MyButton>
+    </div>
   </div>
 </template>
 
@@ -28,6 +33,12 @@ const store = useUsersStore();
 .header__logo {
   height: 40px;
   display: flex;
+  align-items: center;
+}
+
+.header__nav {
+  display: flex;
+  gap: 2em;
   align-items: center;
 }
 </style>

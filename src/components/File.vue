@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { defineProps, onMounted, defineEmits, ref } from "vue";
+import { onMounted, defineEmits, ref } from "vue";
 import { useFilesStore } from "@/stores/files";
+import convertFileSize from "@/helpers/convertFileSize";
 export interface File {
   _id: string;
   type: string;
@@ -64,7 +65,7 @@ const downloadFile = async () => {
       {{ props.file.name }}
     </div>
     <div className="file__date"></div>
-    <div className="file__size">{{ props.file.size }}</div>
+    <div className="file__size">{{ convertFileSize(props.file.size) }}</div>
   </div>
 </template>
 

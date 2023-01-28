@@ -38,7 +38,7 @@ const submitOTP = async () => {
     OTP: OTP.value,
   });
 
-  store.login(email.value, response.data.token);
+  store.login(email.value, response.data);
   router.push("/");
 };
 </script>
