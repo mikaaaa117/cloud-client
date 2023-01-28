@@ -3,6 +3,7 @@ import { useUsersStore } from "@/stores/users";
 import File from "@/components/File.vue";
 import { useFilesStore } from "@/stores/files";
 import { onMounted, ref, TransitionGroup } from "vue";
+import vOutside from "@/helpers/vOutside";
 
 import AddModal from "@/components/AddModal.vue";
 import MyDialog from "@/components/UI/MyDialog.vue";
@@ -15,18 +16,17 @@ onMounted(() => {
 });
 
 const modalButton = ref(null);
-
 const modalVisible = ref(false);
 const showDialog = ref(false);
 const dirName = ref<string | null>(null);
-
-onMounted(() => console.log(modalButton.value));
 
 const backDir = () => filesStore.backDir();
 
 const createDir = () => {
   if (dirName.value !== null) filesStore.createDir(dirName.value);
 };
+
+const handleToggleModal = () => (modalVisible.value = !modalVisible);
 </script>
 
 <template>
@@ -37,13 +37,13 @@ const createDir = () => {
         >+ Add</MyButton
       >
       <AddModal
+        v-outside="{ ref: modalButton, handler: handleToggleModal }"
         @handleShowDialog="showDialog = !showDialog"
         v-model:show="modalVisible"
       />
       <div @click="backDir" class="header__back-button">
         <img src="@/assets/left-arrow.svg" alt="left arrow" />
       </div>
-      <MySelect></MySelect>
     </div>
     <div class="files-table">
       <div class="table__title">
@@ -101,7 +101,23 @@ const createDir = () => {
   grid-template-columns: 1fr 6fr 2fr 1fr;
   margin-bottom: 12px;
 }
-
+.table__title h3 {
+  font-size: 18px;
+}
+@media (max-width: 1024px) {
+  .table__title {
+    grid-template-columns: 1fr 5fr 2fr 1fr;
+  }
+}
+@media (max-width: 768px) {
+  .table__title {
+    grid-gap: 0.6em;
+    grid-template-columns: 1fr 3fr 2fr 1fr;
+  }
+  .table__title h3 {
+    font-size: 16px;
+  }
+}
 .v-enter-active {
   transition: all 0.3s ease-out;
   animation: files-enter 300ms forwards;

@@ -27,4 +27,10 @@ html {
   margin: 0 auto;
   padding: 12px 0;
 }
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 12px 24px;
+  }
+}
 </style>

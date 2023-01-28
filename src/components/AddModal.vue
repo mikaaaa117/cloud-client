@@ -86,7 +86,7 @@ const uploadFile = (e: Event) => {
 }
 
 .row__title {
-  font-family: "Rounded Mplus 1c";
+  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
