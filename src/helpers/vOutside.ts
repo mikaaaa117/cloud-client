@@ -1,6 +1,12 @@
+import type { DirectiveBinding } from "vue";
+
+type CustomElement = HTMLElement & { handleClickOutside: (e: Event) => void };
+
 const vOutside = {
-  mounted(el: any, binding: any) {
+  mounted(el: CustomElement, binding: DirectiveBinding) {
     const button = binding.value.ref.$el;
+    console.log(el);
+    console.log(binding);
     el.handleClickOutside = function(e: Event) {
       if (
         e.target !== el &&
